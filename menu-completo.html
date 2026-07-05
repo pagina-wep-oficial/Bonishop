@@ -894,7 +894,7 @@
         <p class="subhead">Sushi, ramen, banderillas, kushiages, mini burgers, frappés y más. Comida asiática y japonesa fusión en Hopelchén, Campeche.</p>
       </div>
       <div class="full-menu-banner">
-        <img src="assets/img/comidas-para-llevar.jpg" alt="Platillos de Bonishop listos para servir" />
+        <img src="assets/img/bonisushi.jpg" alt="Platillos de Bonishop listos para servir" />
         <div class="full-menu-banner-shade"></div>
         <div class="full-menu-banner-text">
           <span><h3>Comida asiática &amp; japonesa fusión</h3></span>
@@ -934,7 +934,7 @@
       <!-- ===== RAMEN Y SOPAS ===== -->
       <section class="menu-category" id="ramen">
         <div class="category-banner photo-banner">
-          <img src="assets/img/guiso-arroz.jpg" alt="Ramen Bonishop" />
+          <img src="assets/img/ramen-tradicional.jpg" alt="Ramen Bonishop" />
           <div class="category-banner-shade"></div>
           <div class="category-head">
             <h2>Ramen &amp; Sopas</h2>
@@ -979,7 +979,7 @@
       <!-- ===== PLATILLOS ASIÁTICOS ===== -->
       <section class="menu-category" id="asiaticos">
         <div class="category-banner photo-banner">
-          <img src="assets/img/platillo-arroz-frijol.jpg" alt="Platillo asiático Bonishop" />
+          <img src="assets/img/gohan-arroz.jpg" alt="Platillo asiático Bonishop" />
           <div class="category-banner-shade"></div>
           <div class="category-head">
             <h2>Platillos Asiáticos</h2>
@@ -1024,7 +1024,7 @@
       <!-- ===== PROMOCIONES ===== -->
       <section class="menu-category" id="promociones">
         <div class="category-banner photo-banner">
-          <img src="assets/img/tabla-antojitos.jpg" alt="Promociones Bonishop" />
+          <img src="assets/img/banderilla-clasica.jpg" alt="Promociones Bonishop" />
           <div class="category-banner-shade"></div>
           <div class="category-head">
             <span class="category-badge">¡Ofertas!</span>
@@ -1652,41 +1652,153 @@
         }
       });
 
-      // ---------- IMÁGENES RELACIONADAS POR PLATILLO (genéricas para Bonishop) ----------
+      // ---------- IMÁGENES RELACIONADAS POR PLATILLO ----------
+      const dishImageBase = 'assets/img/imagens%20platios/';
+
+      const dishSpecificImages = {
+        'bonisushi': [
+          `${dishImageBase}bonisushi-1.png`,
+          `${dishImageBase}bonisushi-2.png`
+        ],
+        'rollos especiales': [
+          `${dishImageBase}rollos-especiales-1.png`,
+          `${dishImageBase}rollos-especiales-2.png`
+        ],
+        'sushi tempura': [
+          `${dishImageBase}sushi-tempura-1.png`,
+          `${dishImageBase}sushi-tempura-2.png`
+        ],
+        'sashimi (5 pz)': [
+          `${dishImageBase}sashimi-5-pz-1.png`,
+          `${dishImageBase}sashimi-5-pz-2.png`
+        ],
+        'ramen tradicional': [
+          `${dishImageBase}ramen-tradicional-1.png`,
+          `${dishImageBase}ramen-tradicional-2.png`
+        ],
+        'ramen buldak': [
+          `${dishImageBase}ramen-buldak-1.png`,
+          `${dishImageBase}ramen-buldak-2.png`
+        ],
+        'sopa de dumplings': [
+          `${dishImageBase}sopa-de-dumplings-1.png`,
+          `${dishImageBase}sopa-de-dumplings-2.png`
+        ],
+        'caldo de pollo asiatico': [
+          `${dishImageBase}caldo-de-pollo-asiatico-1.png`,
+          `${dishImageBase}caldo-de-pollo-asiatico-2.png`
+        ],
+        'banderilla clasica': [
+          `${dishImageBase}banderilla-clasica-1.png`,
+          `${dishImageBase}banderilla-clasica-2.png`
+        ],
+        'banderilla de pollo': [
+          `${dishImageBase}banderilla-de-pollo-1.png`,
+          `${dishImageBase}banderilla-de-pollo-2.png`
+        ],
+        'banderilla de queso': [
+          `${dishImageBase}banderilla-de-queso-1.png`,
+          `${dishImageBase}banderilla-de-queso-2.png`
+        ],
+        'kushiages (5 pz)': [
+          `${dishImageBase}kushiages-5-pz-1.png`,
+          `${dishImageBase}kushiages-5-pz-2.png`
+        ],
+        'mini burgers': [
+          `${dishImageBase}mini-burgers-1.png`,
+          `${dishImageBase}mini-burgers-2.png`
+        ],
+        'papas a la francesa': [
+          `${dishImageBase}papas-a-la-francesa-1.png`,
+          `${dishImageBase}papas-a-la-francesa-2.png`
+        ],
+        'gohan (arroz)': [
+          `${dishImageBase}gohan-arroz-1.png`,
+          `${dishImageBase}gohan-arroz-2.png`
+        ],
+        'dumplings salteados': [
+          `${dishImageBase}dumplings-salteados-1.png`,
+          `${dishImageBase}dumplings-salteados-2.png`
+        ],
+        'yakimeshi': [
+          `${dishImageBase}yakimeshi-1.png`,
+          `${dishImageBase}yakimeshi-2.png`
+        ],
+        'pollo teriyaki': [
+          `${dishImageBase}pollo-teriyaki-1.png`,
+          `${dishImageBase}pollo-teriyaki-2.png`
+        ],
+        'waffles': [
+          `${dishImageBase}waffles-1.png`,
+          `${dishImageBase}waffles-2.png`
+        ],
+        'mochi': [
+          `${dishImageBase}mochi-1.png`,
+          `${dishImageBase}mochi-2.png`
+        ],
+        'frappe': [
+          `${dishImageBase}frappe-1.png`,
+          `${dishImageBase}frappe-2.png`
+        ],
+        'cafe americano': [
+          `${dishImageBase}cafe-americano-1.png`,
+          `${dishImageBase}cafe-americano-2.png`
+        ],
+        'matcha latte': [
+          `${dishImageBase}matcha-latte-1.png`,
+          `${dishImageBase}matcha-latte-2.png`
+        ],
+        'refrescos / aguas': [
+          `${dishImageBase}refrescos-aguas-1.png`,
+          `${dishImageBase}refrescos-aguas-2.png`
+        ],
+        'boni especial': [
+          `${dishImageBase}boni-especial-1.png`,
+          `${dishImageBase}boni-especial-2.png`
+        ],
+        'combo familiar': [
+          `${dishImageBase}combo-familiar-1.png`,
+          `${dishImageBase}combo-familiar-2.png`
+        ],
+        'combo sushi + frappe': [
+          `${dishImageBase}combo-sushi-frappe-1.png`,
+          `${dishImageBase}combo-sushi-frappe-2.png`
+        ]
+      };
+
       const dishImageLibrary = {
         sushi: [
-          'assets/img/comidas-para-llevar.jpg',
-          'assets/img/tabla-antojitos.jpg',
-          'assets/img/platillo-arroz-frijol.jpg'
+          `${dishImageBase}bonisushi-1.png`,
+          `${dishImageBase}rollos-especiales-1.png`
         ],
         ramen: [
-          'assets/img/guiso-arroz.jpg',
-          'assets/img/platillo-arroz-frijol.jpg',
-          'assets/img/comidas-para-llevar.jpg'
+          `${dishImageBase}ramen-tradicional-1.png`,
+          `${dishImageBase}sopa-de-dumplings-1.png`
         ],
         banderillas: [
-          'assets/img/tabla-antojitos.jpg',
-          'assets/img/comidas-para-llevar.jpg'
+          `${dishImageBase}banderilla-clasica-1.png`,
+          `${dishImageBase}banderilla-de-pollo-1.png`
         ],
         antojitos: [
-          'assets/img/tabla-antojitos.jpg',
-          'assets/img/tacos.jpg',
-          'assets/img/comidas-para-llevar.jpg'
+          `${dishImageBase}banderilla-clasica-2.png`,
+          `${dishImageBase}banderilla-de-pollo-2.png`
         ],
         asiaticos: [
-          'assets/img/platillo-arroz-frijol.jpg',
-          'assets/img/guiso-arroz.jpg',
-          'assets/img/comidas-para-llevar.jpg'
+          'assets/img/gohan-arroz.jpg',
+          `${dishImageBase}sopa-de-dumplings-2.png`
         ],
         postres: [
-          'assets/img/comidas-para-llevar.jpg'
+          'assets/img/waffles.jpg',
+          'assets/img/waffles-chocolate.jpg'
         ],
         bebidas: [
-          'assets/img/comidas-para-llevar.jpg'
+          `${dishImageBase}frappe-1.png`,
+          `${dishImageBase}matcha-latte-1.png`
         ],
         promociones: [
-          'assets/img/tabla-antojitos.jpg',
-          'assets/img/comidas-para-llevar.jpg'
+          `${dishImageBase}boni-especial-1.png`,
+          `${dishImageBase}combo-familiar-1.png`,
+          `${dishImageBase}combo-sushi-frappe-1.png`
         ]
       };
 
@@ -1702,6 +1814,13 @@
       }
 
       function getDishImages(name, categoryId) {
+        const normalizedName = normalizeDishText(name);
+        const exactImages = dishSpecificImages[normalizedName];
+
+        if (exactImages) {
+          return uniqueImages(exactImages);
+        }
+
         const normalized = normalizeDishText(`${name} ${categoryId || ''}`);
 
         if (/(sushi|rollo|rollos|bonisushi|sashimi|tempura)/.test(normalized)) {
@@ -1724,9 +1843,9 @@
         }
 
         return uniqueImages([
-          'assets/img/comidas-para-llevar.jpg',
-          'assets/img/guiso-arroz.jpg',
-          'assets/img/platillo-arroz-frijol.jpg'
+          `${dishImageBase}bonisushi-1.png`,
+          `${dishImageBase}ramen-tradicional-1.png`,
+          'assets/img/gohan-arroz.jpg'
         ]);
       }
 
