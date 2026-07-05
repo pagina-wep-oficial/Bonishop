@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <meta name="color-scheme" content="light only" />
+  <title>Menú completo – Bonishop Hopelchén</title>
+  <meta name="description" content="Menú completo de Bonishop en Hopelchén, Campeche. Sushi, ramen, banderillas, kushiages, mini burgers, frappés y más. Comida asiática y japonesa fusión." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    /* ===== ESTILOS ADICIONALES PARA CARRITO, MODAL, CAROUSEL Y TUTORIAL ===== */
+    body {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* Botones en tarjetas */
+    .btn-add, .btn-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 10px;
+    }
+    .btn-add {
+      background: var(--orange);
+      color: #251006; 
+      box-shadow: 0 4px 12px rgba(242, 161, 40, 0.25);
+    }
+    .btn-add:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 20px rgba(242, 161, 40, 0.35);
+      background: var(--red2);
+      color: #fff;
+    }
+    .btn-add:active { transform: scale(0.96); }
+    .btn-add.added {
+      background: #4CAF50;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    }
+    .btn-view {
+      background: var(--paper);
+      color: var(--ink);
+      border: 2px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .btn-view:hover {
+      background: var(--bg);
+      border-color: var(--orange);
+      transform: translateY(-2px);
+    }
+    .btn-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Botón flotante del carrito (abajo-centro) */
+    .cart-floating-btn {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 150;
+      background: var(--orange);
+      color: #251006;
+      border: none;
+      border-radius: 60px;
+      padding: 14px 28px;
+      font-weight: 800;
+      font-size: 1rem;
+      box-shadow: 0 8px 30px rgba(242, 161, 40, 0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      white-space: nowrap;
+    }
+    .cart-floating-btn:hover {
+      transform: translateX(-50%) translateY(-4px);
+      box-shadow: 0 14px 40px rgba(242, 161, 40, 0.5);
+      background: var(--red2);
+      color: #fff;
+    }
+    .cart-floating-btn .badge {
+      background: #251006;
+      color: #fff;
+      border-radius: 999px;
+      padding: 2px 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .cart-floating-btn .total-badge {
+      background: rgba(255,255,255,0.2);
+      padding: 2px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+    }
+    .cart-floating-btn .icon { font-size: 1.4rem; }
+
+    /* Panel del carrito (slide-in) */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .cart-overlay.open { opacity: 1; visibility: visible; }
+    .cart-panel {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 400px;
+      max-width: 92vw;
+      height: 100vh;
+      background: var(--paper);
+      box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+      z-index: 210;
+      transition: right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 20px;
+      border-radius: 28px 0 0 28px;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      will-change: right, transform;
+    }
+    .cart-panel.open { right: 0; }
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+    }
+    .cart-header h3 {
+      margin: 0;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cart-close {
+      background: transparent;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--muted);
+      transition: color 0.2s;
+      padding: 0 8px;
+    }
+    .cart-close:hover { color: var(--red); }
+    .cart-body {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .cart-item {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .cart-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .cart-item-info {
+      flex: 1;
+    }
+    .cart-item-name {
+      font-weight: 700;
+      font-size: 0.98rem;
+    }
+    .cart-item-price {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .cart-item-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 4px;
+      padding-left: 4px;
+      border-left: 3px solid var(--orange);
+      padding-left: 8px;
+      font-style: italic;
+    }
+    .cart-item-remove {
+      background: transparent;
+      border: none;
+      color: var(--red);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0 6px;
+      transition: transform 0.2s;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .cart-item-remove:hover { transform: scale(1.3); }
+    .cart-footer {
+      border-top: 2px solid var(--line);
+      padding-top: 18px;
+      flex-shrink: 0;
+    }
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .cart-total-row .total-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      flex: 1;
+      text-align: left;
+    }
+    .cart-total-row .total-amount {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--red2);
+      white-space: nowrap;
+    }
+    .btn-cart-order {
+      width: 100%;
+      padding: 14px;
+      font-size: 1rem;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-shrink: 0;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    .btn-cart-clear {
+      width: 100%;
+      padding: 10px;
+      font-size: 0.9rem;
+      background: transparent;
+      color: var(--red);
+      border: 2px solid var(--red);
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.2s;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-cart-clear:hover {
+      background: var(--red);
+      color: #fff;
+    }
+    .cart-empty-msg {
+      text-align: center;
+      color: var(--muted);
+      padding: 40px 0;
+      font-size: 1.1rem;
+    }
+
+    /* ===== MODAL DE CANTIDAD ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(6px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-content {
+      background: var(--paper);
+      border-radius: 32px;
+      padding: 32px 28px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+      position: relative;
+      animation: modalFade 0.25s ease;
+    }
+    @keyframes modalFade {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--muted);
+      transition: color 0.2s;
+      padding: 0 4px;
+    }
+    .modal-close-btn:hover { color: var(--red); }
+    .modal-content h3 {
+      font-size: 1.6rem;
+      margin: 0 0 4px;
+      color: var(--ink);
+    }
+    .modal-price {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin: 0 0 20px;
+    }
+    .modal-quantity-section {
+      margin: 16px 0 12px;
+    }
+    .modal-quantity-section label {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    .modal-qty-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .modal-qty-control button {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--line);
+      background: var(--bg);
+      font-size: 1.4rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+    }
+    .modal-qty-control button:hover {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+    }
+    .modal-qty-control input {
+      width: 70px;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      border: 2px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 4px;
+      background: var(--bg);
+      color: var(--ink);
+      outline: none;
+    }
+    .modal-qty-control input:focus {
+      border-color: var(--orange);
+    }
+    .modal-subtotal {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--red2);
+      margin: 12px 0 16px;
+      text-align: right;
+    }
+    .modal-note-section {
+      margin: 12px 0 20px;
+    }
+    .modal-note-section label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .modal-note-section textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 2px solid var(--line);
+      background: var(--bg);
+      font-family: inherit;
+      font-size: 0.95rem;
+      resize: vertical;
+      min-height: 60px;
+      transition: border 0.2s;
+      color: var(--ink);
+    }
+    .modal-note-section textarea:focus {
+      border-color: var(--orange);
+      outline: none;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .modal-actions button {
+      flex: 1;
+      padding: 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 1rem;
+    }
+    .modal-actions .btn-cancel {
+      background: var(--bg);
+      color: var(--muted);
+      border: 2px solid var(--line);
+    }
+    .modal-actions .btn-cancel:hover {
+      background: var(--line);
+      color: var(--ink);
+    }
+    .modal-actions .btn-confirm {
+      background: var(--orange);
+      color: #251006;
+      box-shadow: 0 8px 24px rgba(242, 161, 40, 0.3);
+    }
+    .modal-actions .btn-confirm:hover {
+      background: var(--red2);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(199, 71, 36, 0.35);
+    }
+
+    /* ===== MODAL CAROUSEL ===== */
+    .carousel-modal .modal-content {
+      max-width: 700px;
+      padding: 20px;
+      background: #1a1a1a;
+      border-radius: 28px;
+    }
+    .carousel-modal .modal-close-btn {
+      color: #fff;
+      z-index: 10;
+    }
+    .carousel-modal .modal-close-btn:hover { color: var(--orange); }
+    .carousel-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+    }
+    .carousel-image {
+      width: 100%;
+      max-height: 70vh;
+      object-fit: contain;
+      border-radius: 16px;
+      background: #111;
+    }
+    .carousel-control {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+    .carousel-control:hover {
+      background: rgba(0,0,0,0.8);
+    }
+    .carousel-control.prev { left: 10px; }
+    .carousel-control.next { right: 10px; }
+    .carousel-indicator {
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9rem;
+      margin-top: 12px;
+      font-weight: 600;
+    }
+    .carousel-order-btn {
+      width: 100%;
+      margin-top: 16px;
+      color: #fff;
+    }
+    .carousel-modal .modal-content h3 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    /* ===== MEDIA QUERIES MEJORADAS PARA DPI ALTO ===== */
+    @media (max-width: 1024px) {
+      .nav-toggle {
+        display: block !important;
+        z-index: 60;
+        pointer-events: auto;
+      }
+      .nav-menu {
+        position: absolute;
+        top: 76px;
+        left: 4%;
+        right: 4%;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        background: #21110b;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 22px;
+        padding: 18px;
+        z-index: 55;
+      }
+      .nav-menu.open {
+        display: flex;
+      }
+      .hero-grid,
+      .intro-panel,
+      .pizza-grid,
+      .location-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        min-height: 980px;
+      }
+      .hero-card {
+        max-width: 470px;
+      }
+      .feature-list,
+      .dish-grid,
+      .gallery-grid,
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+      .dish-card.big {
+        grid-row: auto;
+      }
+      .menu-head,
+      .cta-panel,
+      .footer-grid {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .menu-card {
+        max-width: 100%;
+      }
+      .menu-items {
+        grid-template-columns: 1fr;
+      }
+      .full-menu-banner-text {
+        max-width: 80%;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .cart-panel {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+        right: -110%;
+      }
+      .cart-floating-btn {
+        bottom: 20px;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        gap: 8px;
+      }
+      .cart-floating-btn .badge,
+      .cart-floating-btn .total-badge {
+        font-size: 0.75rem;
+        padding: 2px 8px;
+      }
+      .cart-total-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+      }
+      .cart-total-row .total-note {
+        text-align: left;
+        font-size: 0.75rem;
+      }
+      .cart-total-row .total-amount {
+        text-align: left;
+      }
+
+      .modal-content {
+        padding: 20px 16px;
+        max-width: 92vw;
+        width: 100%;
+      }
+      .modal-content h3 {
+        font-size: 1.4rem;
+        margin-bottom: 2px;
+      }
+      .modal-price {
+        font-size: 1rem;
+        margin-bottom: 16px;
+      }
+      .modal-quantity-section {
+        margin: 12px 0 8px;
+      }
+      .modal-quantity-section label {
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+      }
+      .modal-qty-control button {
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
+      }
+      .modal-qty-control input {
+        width: 56px;
+        font-size: 1.2rem;
+        padding: 6px 4px;
+      }
+      .modal-subtotal {
+        font-size: 1.1rem;
+        margin: 8px 0 12px;
+      }
+      .modal-note-section textarea {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        min-height: 50px;
+      }
+      .modal-actions {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .modal-actions button {
+        padding: 12px;
+        font-size: 0.95rem;
+      }
+
+      .carousel-modal .modal-content {
+        padding: 12px;
+      }
+      .carousel-control {
+        width: 36px;
+        height: 36px;
+        font-size: 1.4rem;
+      }
+      .carousel-control.prev { left: 4px; }
+      .carousel-control.next { right: 4px; }
+      .carousel-image {
+        max-height: 60vh;
+      }
+
+      .btn-cart-order,
+      .btn-cart-clear {
+        display: flex !important;
+        width: 100% !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+
+      .btn-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+      }
+      .btn-add,
+      .btn-view {
+        justify-content: center;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+      }
+    }
+
+    /* ===== TUTORIAL ===== */
+    .tutorial-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(6px);
+    }
+    .tutorial-overlay.open { display: flex; }
+    .tutorial-card {
+      background: var(--paper);
+      border-radius: 32px;
+      max-width: 480px;
+      width: 100%;
+      padding: 32px 28px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      position: relative;
+      animation: modalFade 0.3s ease;
+      text-align: center;
+    }
+    .tutorial-card .step-indicator {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: 0.06em;
+    }
+    .tutorial-card h3 {
+      font-size: 1.6rem;
+      margin: 0 0 12px;
+      color: var(--ink);
+    }
+    .tutorial-card p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0 0 24px;
+    }
+    .tutorial-card .tutorial-icon {
+      font-size: 3rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .tutorial-card .tutorial-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .tutorial-card .tutorial-actions button {
+      padding: 10px 24px;
+      border-radius: 999px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.95rem;
+    }
+    .tutorial-card .btn-skip {
+      background: transparent;
+      color: var(--muted);
+      border: 2px solid var(--line);
+    }
+    .tutorial-card .btn-skip:hover {
+      background: var(--line);
+      color: var(--ink);
+    }
+    .tutorial-card .btn-next {
+      background: var(--orange);
+      color: #251006;
+      box-shadow: 0 8px 24px rgba(242, 161, 40, 0.3);
+    }
+    .tutorial-card .btn-next:hover {
+      background: var(--red2);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    .tutorial-card .btn-done {
+      background: var(--red2);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(199, 71, 36, 0.3);
+    }
+    .tutorial-card .btn-done:hover {
+      background: var(--orange);
+      color: #251006;
+      transform: translateY(-2px);
+    }
+
+    /* ===== FORZAR TEMA CLARO (MODO BLANCO) ===== */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #fff7ec !important;
+        --paper: #fffdf8 !important;
+        --ink: #21110b !important;
+        --muted: #72655b !important;
+        --line: rgba(33, 17, 11, 0.12) !important;
+      }
+
+      body {
+        background: var(--bg) !important;
+        color: var(--ink) !important;
+      }
+
+      .topbar {
+        background: rgba(33, 17, 11, 0.86) !important;
+      }
+
+      .cart-panel {
+        background: var(--paper) !important;
+      }
+
+      .modal-content {
+        background: var(--paper) !important;
+      }
+
+      .menu-item-card {
+        background: var(--paper) !important;
+      }
+
+      .menu-preview-card {
+        background: #fffaf0 !important;
+      }
+
+      .full-menu {
+        background: var(--bg) !important;
+      }
+
+      .cart-floating-btn {
+        background: var(--orange) !important;
+        color: #251006 !important;
+      }
+      .cart-floating-btn:hover {
+        background: var(--red2) !important;
+        color: #fff !important;
+      }
+    }
+        /* ===== BOTONES FLOTANTES: WhatsApp + Ayuda ===== */
+    .floating-buttons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 160;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+    .floating-buttons .floating-whatsapp {
+      position: static;
+      margin: 0;
+      z-index: auto;
+    }
+    .floating-help {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--orange);
+      color: #251006;
+      font-size: 1.6rem;
+      font-weight: 800;
+      box-shadow: 0 8px 30px rgba(242, 161, 40, 0.4);
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .floating-help:hover {
+      transform: scale(1.05);
+      background: var(--red2);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="topbar">
+    <div class="container nav">
+      <a href="index.html" class="brand" aria-label="Volver al inicio">
+        <span class="brand-icon">🍣</span>
+        <span><strong>Bonishop</strong><small>Menú completo</small></span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+      <nav class="nav-menu" id="navMenu" aria-label="Navegación">
+        <a href="index.html#menu">← Volver a la página principal</a>
+        <a href="index.html#ubicacion">Ubicación</a>
+        <a class="mini-cta" href="https://wa.me/529961052322?text=Hola%2C%20quiero%20hacer%20un%20pedido%20en%20Bonishop" target="_blank" rel="noopener">WhatsApp</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="full-menu" id="contenido">
+    <div class="container full-menu-top">
+      <a href="index.html#menu" class="back-link">← Volver a la página principal</a>
+      <div class="full-menu-head">
+        <p class="eyebrow dark">Menú completo de Bonishop – Pedidos a domicilio.</p>
+        <p class="subhead">Sushi, ramen, banderillas, kushiages, mini burgers, frappés y más. Comida asiática y japonesa fusión en Hopelchén, Campeche.</p>
+      </div>
+      <div class="full-menu-banner">
+        <img src="assets/img/comidas-para-llevar.jpg" alt="Platillos de Bonishop listos para servir" />
+        <div class="full-menu-banner-shade"></div>
+        <div class="full-menu-banner-text">
+          <span><h3>Comida asiática &amp; japonesa fusión</h3></span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="quick-nav-wrap" aria-label="Categorías del menú completo">
+      <div class="container quick-nav">
+        <a href="#sushi">Sushi &amp; Rollos</a>
+        <a href="#ramen">Ramen &amp; Sopas</a>
+        <a href="#banderillas">Banderillas &amp; Antojitos</a>
+        <a href="#asiaticos">Platillos Asiáticos</a>
+        <a href="#postres-bebidas">Postres &amp; Bebidas</a>
+        <a href="#promociones">Promociones</a>
+      </div>
+    </nav>
+
+    <div class="container full-menu-body">
+      <!-- ===== SUSHI Y ROLLOS ===== -->
+      <section class="menu-category" id="sushi">
+        <div class="category-banner icon-banner">
+          <span class="category-icon" aria-hidden="true">🍱</span>
+          <div class="category-head">
+            <h2>Sushi &amp; Rollos</h2>
+            <p>Elaborados con ingredientes frescos y con estilo Bonishop</p>
+          </div>
+        </div>
+        <div class="menu-items">
+          <article class="menu-item-card"><div class="item-top"><h4>Bonisushi</h4><span class="price-pill">$140</span></div><p class="item-desc">Sushi tradicional con pescado fresco, arroz y alga nori.</p></article>
+          <article class="menu-item-card"><div class="item-top"><h4>Rollos especiales</h4><span class="price-pill">$160</span></div><p class="item-desc">Rollos con combinaciones únicas de la casa (tempura, aguacate, queso crema, etc.).</p></article>
+          <article class="menu-item-card"><div class="item-top"><h4>Sushi tempura</h4><span class="price-pill">$170</span></div><p class="item-desc">Rollo empanizado y frito, acompañado de salsa especial.</p></article>
+          <article class="menu-item-card"><div class="item-top"><h4>Sashimi (5 pz)</h4><span class="price-pill">$180</span></div><p class="item-desc">Cortes finos de pescado fresco, servidos con wasabi y jengibre.</p></article>
+        </div>
+      </section>
+
+      <!-- ===== RAMEN Y SOPAS ===== -->
+      <section class="menu-category" id="ramen">
+        <div class="category-banner photo-banner">
+          <img src="assets/img/guiso-arroz.jpg" alt="Ramen Bonishop" />
+          <div class="category-banner-shade"></div>
+          <div class="category-head">
+            <h2>Ramen &amp; Sopas</h2>
+            <p>Caldo lleno de sabor, ideal para cualquier ocasión</p>
+          </div>
+        </div>
+        <div class="menu-items">
+          <article class="menu-item-card"><div class="item-top"><h4>Ramen tradicional</h4><span class="price-pill">$140</span></div><p class="item-desc">Caldo de cerdo/pollo, fideos, huevo, chashu, cebolla verde y alga nori.</p></article>
+          <article class="menu-item-card"><div class="item-top"><h4>Ramen Buldak</h4><span class="price-pill">$150</span></div><p class="item-desc">Versión picante al estilo coreano, con pollo y queso derretido.</p></article>
+          <article class="menu-item-card"><div class="item-top"><h4>Sopa de dumplings</h4><span class="price-pill">$130</span></div><p class="item-desc">Dumplings (gyozas) en caldo claro con verduras y cebolla.</p></article>
+          <article class="menu-item-card"><div class="item-top"><h4>Caldo de pollo asiático</h4><span class="price-pill">$120</span></div><p class="item-desc">Con jengibre, cebollín, zanahoria y fideos de arroz.</p></article>
+        </div>
+      </section>
+
+      <!-- ===== BANDERILLAS Y ANTOJITOS ===== -->
+      <section class="menu-category" id="banderillas">
+        <div class="category-banner icon-banner">
+          <span class="category-icon" aria-hidden="true">🍢</span>
+          <div class="category-head">
+            <h2>Banderillas &amp; Antojitos</h2>
+            <p>Snacks crujientes y llenos de sabor</p>
+          </div>
+        </div>
+        <div class="subcategory">
+          <h3>Banderillas</h3>
+          <div class="menu-items">
+            <article class="menu-item-card"><div class="item-top"><h4>Banderilla clásica</h4><span class="price-pill">$90</span></div><p class="item-desc">Palito de queso o carne empanizado, con salsa de la casa.</p></article>
+            <article class="menu-item-card"><div class="item-top"><h4>Banderilla de pollo</h4><span class="price-pill">$100</span></div><p class="item-desc">Tiras de pollo empanizadas, acompañadas de aderezo.</p></article>
+            <article class="menu-item-card"><div class="item-top"><h4>Banderilla de queso</h4><span class="price-pill">$85</span></div><p class="item-desc">Queso derretido empanizado con un toque de chile.</p></article>
+          </div>
+        </div>
+        <div class="subcategory">
+          <h3>Kushiages y más</h3>
+          <div class="menu-items">
+            <article class="menu-item-card"><div class="item-top"><h4>Kushiages (5 pz)</h4><span class="price-pill">$110</span></div><p class="item-desc">Brochetas de carne, pollo o queso, empanizadas y fritas.</p></article>
+            <article class="menu-item-card"><div class="item-top"><h4>Mini burgers</h4><span class="price-pill">$95</span></div><p class="item-desc">Hamburguesas pequeñas con queso y salsa especial.</p></article>
+            <article class="menu-item-card"><div class="item-top"><h4>Papas a la francesa</h4><span class="price-pill">$70</span></div><p class="item-desc">Crujientes y sazonadas, ideales para compartir.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PLATILLOS ASIÁTICOS ===== -->
+      <section class="menu-category" id="asiaticos">
+        <div class="category-banner photo-banner">
+          <img src="assets/img/platillo-arroz-frijol.jpg" alt="Platillo asiático Bonishop" />
+          <div class="category-banner-shade"></div>
+          <div class="category-head">
+            <h2>Platillos Asiáticos</h2>
+            <p>Platos fuertes con influencia japonesa y fusión</p>
+          </div>
+        </div>
+        <div class="menu-items">
+          <article class="menu-item-card"><div class="item-top"><h4>Gohan (arroz)</h4><span class="price-pill">$150</span></div><p class="item-desc">Arroz estilo japonés con verduras salteadas y huevo.</p></article>
+          <article class="menu-item-card"><div class="item-top"><h4>Dumplings salteados</h4><span class="price-pill">$140</span></div><p class="item-desc">Gyozas salteadas con vegetales y salsa de soja.</p></article>
+          <article class="menu-item-card"><div class="item-top"><h4>Yakimeshi</h4><span class="price-pill">$150</span></div><p class="item-desc">Arroz frito con verduras, pollo o cerdo.</p></article>
+          <article class="menu-item-card"><div class="item-top"><h4>Pollo teriyaki</h4><span class="price-pill">$160</span></div><p class="item-desc">Pechuga de pollo glaseada con salsa teriyaki, acompañada de arroz y ensalada.</p></article>
+        </div>
+      </section>
+
+      <!-- ===== POSTRES Y BEBIDAS ===== -->
+      <section class="menu-category" id="postres-bebidas">
+        <div class="category-banner icon-banner">
+          <span class="category-icon" aria-hidden="true">🧋</span>
+          <div class="category-head">
+            <h2>Postres &amp; Bebidas</h2>
+            <p>El toque dulce y refrescante para acompañar</p>
+          </div>
+        </div>
+        <div class="subcategory">
+          <h3>Postres</h3>
+          <div class="menu-items">
+            <article class="menu-item-card"><div class="item-top"><h4>Waffles</h4><span class="price-pill">$75</span></div><p class="item-desc">Esponjosos waffles con jarabe, frutas o crema batida.</p></article>
+            <article class="menu-item-card"><div class="item-top"><h4>Mochi</h4><span class="price-pill">$60</span></div><p class="item-desc">Pastelito de arroz relleno de crema de sabor (fresa, chocolate, matcha).</p></article>
+          </div>
+        </div>
+        <div class="subcategory">
+          <h3>Bebidas</h3>
+          <div class="menu-items">
+            <article class="menu-item-card"><div class="item-top"><h4>Frappé</h4><span class="price-pill">$65</span></div><p class="item-desc">Bebida helada de café o chocolate, con crema batida.</p></article>
+            <article class="menu-item-card"><div class="item-top"><h4>Café americano</h4><span class="price-pill">$45</span></div><p class="item-desc">Café negro de especialidad.</p></article>
+            <article class="menu-item-card"><div class="item-top"><h4>Matcha latte</h4><span class="price-pill">$55</span></div><p class="item-desc">Leche con té matcha, caliente o frío.</p></article>
+            <article class="menu-item-card"><div class="item-top"><h4>Refrescos / Aguas</h4><span class="price-pill">$35</span></div><p class="item-desc">Variedad de refrescos y agua natural.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PROMOCIONES ===== -->
+      <section class="menu-category" id="promociones">
+        <div class="category-banner photo-banner">
+          <img src="assets/img/tabla-antojitos.jpg" alt="Promociones Bonishop" />
+          <div class="category-banner-shade"></div>
+          <div class="category-head">
+            <span class="category-badge">¡Ofertas!</span>
+            <h2>Promociones especiales</h2>
+            <p>Combos y descuentos por tiempo limitado</p>
+          </div>
+        </div>
+        <div class="menu-items">
+          <article class="menu-item-card"><div class="item-top"><h4>Boni Especial</h4><span class="price-pill">$145</span></div><p class="item-desc">Incluye: 1 mini sushi, 1 mini banderilla clásica, 5 mini kushiages y 1 mini hamburguesa.</p></article>
+          <article class="menu-item-card"><div class="item-top"><h4>Combo familiar</h4><span class="price-pill">$220</span></div><p class="item-desc">2 ramen, 1 orden de dumplings y 2 bebidas.</p></article>
+          <article class="menu-item-card"><div class="item-top"><h4>Combo sushi + frappé</h4><span class="price-pill">$190</span></div><p class="item-desc">Rollos especiales + frappé de tu elección.</p></article>
+        </div>
+      </section>
+
+      <p class="menu-footnote">Los precios están sujetos a cambio. Consulta disponibilidad y precios actuales directamente con Bonishop.</p>
+
+      <div class="full-menu-bottom-cta">
+        <a href="index.html" class="btn secondary" style="border-color:var(--ink); color:var(--ink); margin-left:10px;">← Volver al inicio</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><strong>Bonishop</strong><span>Comida asiática y japonesa fusión en Hopelchén.</span></div>
+      <div><a href="index.html">Inicio</a><a href="index.html#ubicacion">Ubicación</a><a href="https://wa.me/529961052322" target="_blank" rel="noopener">WhatsApp</a></div>
+    </div>
+  </footer>
+
+  <!-- Botones flotantes: WhatsApp y Ayuda -->
+  <div class="floating-buttons">
+    <a class="floating-whatsapp" href="https://wa.me/529961052322?text=Hola%2C%20quiero%20hacer%20un%20pedido%20en%20Bonishop" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <img src="assets/img/whatsapp.svg" alt="" aria-hidden="true" />
+</a>
+    <a href="#" id="tutorialTrigger" class="floating-help" aria-label="Ayuda">🎓</a>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button id="closeLightbox" aria-label="Cerrar">×</button>
+    <img id="lightboxImg" src="" alt="Imagen ampliada" />
+  </div>
+
+  <!-- ===== BOTÓN FLOTANTE DEL CARRITO ===== -->
+  <button class="cart-floating-btn" id="cartFloatingBtn">
+    <span class="icon">🛒</span>
+    <span>Ver pedido</span>
+    <span class="badge" id="cartFloatingBadge">0</span>
+    <span class="total-badge" id="cartFloatingTotal">$0</span>
+  </button>
+
+  <!-- ===== PANEL DEL CARRITO ===== -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <div class="cart-panel" id="cartPanel" role="dialog" aria-label="Carrito de pedidos">
+    <div class="cart-header">
+      <h3>🛒 Tu pedido</h3>
+      <button class="cart-close" id="cartClose" aria-label="Cerrar carrito">&times;</button>
+    </div>
+    <div class="cart-body" id="cartBody">
+      <div class="cart-empty-msg">Aún no has agregado nada.<br>Elige tus platillos favoritos.</div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span class="total-note" id="cartTotalNote"></span>
+        <span class="total-amount" id="cartTotal">$0</span>
+      </div>
+      <button class="btn primary btn-cart-order" id="cartOrderBtn">📲 Hacer pedido por WhatsApp</button>
+      <button class="btn-cart-clear" id="cartClearBtn">🗑️ Limpiar carrito</button>
+    </div>
+  </div>
+
+  <!-- ===== MODAL DE CANTIDAD ===== -->
+  <div class="modal-overlay" id="quantityModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Cerrar modal">&times;</button>
+      <h3 id="modalItemName">Nombre del platillo</h3>
+      <p class="modal-price" id="modalItemPrice">Precio</p>
+
+      <div class="modal-quantity-section">
+        <label id="modalQuantityLabel">Cantidad:</label>
+        <div class="modal-qty-control">
+          <button id="modalQtyDec" aria-label="Disminuir cantidad">−</button>
+          <input type="number" id="modalQtyInput" value="1" min="1" max="99" step="1" />
+          <button id="modalQtyInc" aria-label="Aumentar cantidad">+</button>
+        </div>
+      </div>
+
+      <div class="modal-subtotal" id="modalSubtotal">Subtotal: $0</div>
+
+      <div class="modal-note-section">
+        <label>✏️ Nota o indicación (opcional)</label>
+        <textarea id="modalNoteInput" placeholder="Ej. sin cebolla, bien cocido, extra queso, etc." rows="2"></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" id="modalCancelBtn">Cancelar</button>
+        <button class="btn-confirm" id="modalConfirmBtn">Agregar al carrito</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL CAROUSEL ===== -->
+  <div class="modal-overlay carousel-modal" id="carouselModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="carouselClose" aria-label="Cerrar carousel">&times;</button>
+      <h3 id="carouselTitle" style="color:#fff;">Platillo</h3>
+      <div class="carousel-container">
+        <button class="carousel-control prev" id="carouselPrev" aria-label="Anterior">‹</button>
+        <img class="carousel-image" id="carouselImage" src="" alt="Imagen del platillo" />
+        <button class="carousel-control next" id="carouselNext" aria-label="Siguiente">›</button>
+      </div>
+      <div class="carousel-indicator" id="carouselIndicator"></div>
+      <button class="btn primary carousel-order-btn" id="carouselOrderBtn">Ordenar este platillo</button>
+    </div>
+  </div>
+
+  <!-- ===== TUTORIAL ===== -->
+  <div class="tutorial-overlay" id="tutorialOverlay">
+    <div class="tutorial-card">
+      <div class="step-indicator" id="tutorialStepIndicator">Paso 1 de 4</div>
+      <span class="tutorial-icon" id="tutorialIcon">👆</span>
+      <h3 id="tutorialTitle">¡Bienvenido!</h3>
+      <p id="tutorialText">Aquí te explicamos cómo hacer tu pedido fácilmente.</p>
+      <div class="tutorial-actions">
+        <button class="btn-skip" id="tutorialSkip">Saltar</button>
+        <button class="btn-next" id="tutorialNext">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    // ============================================================
+    //  CARRITO COMPLETO CON CANTIDADES, NOTAS, LIMPIEZA Y CAROUSEL
+    // ============================================================
+    (function() {
+      "use strict";
+
+      // ---------- ESTADO ----------
+      let cart = [];
+      const CART_KEY = 'bonishop_cart';
+
+      // ---------- ELEMENTOS DOM ----------
+      const cartFloatingBtn = document.getElementById('cartFloatingBtn');
+      const cartFloatingBadge = document.getElementById('cartFloatingBadge');
+      const cartFloatingTotal = document.getElementById('cartFloatingTotal');
+      const cartPanel = document.getElementById('cartPanel');
+      const cartOverlay = document.getElementById('cartOverlay');
+      const cartClose = document.getElementById('cartClose');
+      const cartBody = document.getElementById('cartBody');
+      const cartTotal = document.getElementById('cartTotal');
+      const cartTotalNote = document.getElementById('cartTotalNote');
+      const cartOrderBtn = document.getElementById('cartOrderBtn');
+      const cartClearBtn = document.getElementById('cartClearBtn');
+
+      // Modal cantidad
+      const modal = document.getElementById('quantityModal');
+      const modalCloseBtn = document.getElementById('modalCloseBtn');
+      const modalCancelBtn = document.getElementById('modalCancelBtn');
+      const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+      const modalItemName = document.getElementById('modalItemName');
+      const modalItemPrice = document.getElementById('modalItemPrice');
+      const modalQuantityLabel = document.getElementById('modalQuantityLabel');
+      const modalQtyInput = document.getElementById('modalQtyInput');
+      const modalQtyDec = document.getElementById('modalQtyDec');
+      const modalQtyInc = document.getElementById('modalQtyInc');
+      const modalSubtotal = document.getElementById('modalSubtotal');
+      const modalNoteInput = document.getElementById('modalNoteInput');
+
+      // Carousel
+      const carouselModal = document.getElementById('carouselModal');
+      const carouselClose = document.getElementById('carouselClose');
+      const carouselTitle = document.getElementById('carouselTitle');
+      const carouselImage = document.getElementById('carouselImage');
+      const carouselPrev = document.getElementById('carouselPrev');
+      const carouselNext = document.getElementById('carouselNext');
+      const carouselIndicator = document.getElementById('carouselIndicator');
+      const carouselOrderBtn = document.getElementById('carouselOrderBtn');
+
+      // Tutorial
+      const tutorialOverlay = document.getElementById('tutorialOverlay');
+      const tutorialStepIndicator = document.getElementById('tutorialStepIndicator');
+      const tutorialIcon = document.getElementById('tutorialIcon');
+      const tutorialTitle = document.getElementById('tutorialTitle');
+      const tutorialText = document.getElementById('tutorialText');
+      const tutorialSkip = document.getElementById('tutorialSkip');
+      const tutorialNext = document.getElementById('tutorialNext');
+      const tutorialTrigger = document.getElementById('tutorialTrigger');
+
+      // ---------- VARIABLES PARA EL MODAL ----------
+      let modalItemData = null;
+      // Variables para carousel
+      let currentImages = [];
+      let currentImageIndex = 0;
+      let currentCarouselItem = null;
+      // Tutorial
+      let tutorialStep = 0;
+      const TUTORIAL_STEPS = [
+        {
+          icon: '👆',
+          title: 'Paso 1: Elige un platillo',
+          text: 'Busca tu platillo favorito y haz clic en el botón 🍽️ Ordenar que aparece en cada tarjeta.'
+        },
+        {
+          icon: '📝',
+          title: 'Paso 2: Personaliza tu pedido',
+          text: 'Selecciona la cantidad que deseas y escribe una nota (opcional). Luego presiona "Agregar al carrito".'
+        },
+        {
+          icon: '🛒',
+          title: 'Paso 3: Revisa tu carrito',
+          text: 'Haz clic en el botón "Ver pedido" (abajo-centro) para revisar tu selección. Puedes eliminar platios si lo deseas pulsando la X.'
+        },
+        {
+          icon: '📲',
+          title: 'Paso 4: Envía tu pedido',
+          text: 'Cuando estés listo, presiona "📲 Hacer pedido por WhatsApp". ¡Tu pedido se enviará automáticamente!'
+        }
+      ];
+
+      // ---------- FUNCIONES DE CARRITO ----------
+      function loadCart() {
+        try {
+          const stored = localStorage.getItem(CART_KEY);
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            if (Array.isArray(parsed)) {
+              cart = parsed.map(item => {
+                if (item.price === 'Consultar' || !item.price) {
+                  item.price = 'Precio a consultar'; // ya no debería ocurrir
+                }
+                if (typeof item.quantity !== 'number') item.quantity = 1;
+                if (typeof item.note !== 'string') item.note = '';
+                if (typeof item.unitPrice !== 'number') {
+                  const num = parseFloat(item.price);
+                  if (!isNaN(num)) item.unitPrice = num;
+                  else item.unitPrice = 0;
+                }
+                return item;
+              });
+            }
+          }
+        } catch (e) { cart = []; }
+        if (!Array.isArray(cart)) cart = [];
+        renderCart();
+        saveCart();
+      }
+
+      function saveCart() {
+        localStorage.setItem(CART_KEY, JSON.stringify(cart));
+      }
+
+      function renderCart() {
+        const count = cart.length;
+        cartFloatingBadge.textContent = count;
+
+        let total = 0;
+        let hasConsult = false;
+
+        cart.forEach(item => {
+          if (item.priceType === 'consult' || item.price === 'Precio a consultar') {
+            hasConsult = true;
+          } else {
+            if (typeof item.totalPrice === 'number' && !isNaN(item.totalPrice)) {
+              total += item.totalPrice;
+            } else if (typeof item.unitPrice === 'number' && !isNaN(item.unitPrice)) {
+              const qty = item.quantity || 1;
+              total += item.unitPrice * qty;
+            }
+          }
+        });
+
+        cartFloatingTotal.textContent = total > 0 ? `$${total}` : '$0';
+
+        if (count === 0) {
+          cartBody.innerHTML = `<div class="cart-empty-msg">Aún no has agregado nada.<br>Elige tus platillos favoritos.</div>`;
+          cartTotal.textContent = '$0';
+          cartTotalNote.textContent = '';
+          return;
+        }
+
+        let html = '';
+        cart.forEach((item, index) => {
+          const qty = item.quantity || 1;
+          let priceDisplay = item.price || 'Precio a consultar';
+          let totalPriceDisplay = '';
+          if (item.priceType === 'consult' || priceDisplay === 'Precio a consultar') {
+            totalPriceDisplay = 'Precio a consultar';
+          } else {
+            const unit = item.unitPrice || 0;
+            const totalPrice = unit * qty;
+            totalPriceDisplay = `$${totalPrice}`;
+          }
+          const note = item.note && item.note.trim() ? item.note.trim() : null;
+
+          html += `
+            <div class="cart-item" data-index="${index}">
+              <div class="cart-item-row">
+                <div class="cart-item-info">
+                  <div class="cart-item-name">${item.name} <span style="font-weight:400;color:var(--muted);font-size:0.85rem;">×${qty}</span></div>
+                  <div class="cart-item-price">${totalPriceDisplay}</div>
+                </div>
+                <button class="cart-item-remove" data-index="${index}" aria-label="Eliminar ${item.name}">×</button>
+              </div>
+              ${note ? `<div class="cart-item-note">📝 ${note}</div>` : ''}
+            </div>
+          `;
+        });
+        cartBody.innerHTML = html;
+
+        document.querySelectorAll('.cart-item-remove').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const idx = parseInt(this.dataset.index);
+            removeFromCart(idx);
+          });
+        });
+
+        cartTotal.textContent = total > 0 ? `$${total}` : '$0';
+        cartTotalNote.textContent = hasConsult ? 'El total no incluye platillos con precio a consultar.' : '';
+      }
+
+      function addItemToCart(name, price, unitPrice, priceType, quantity, note) {
+        const item = {
+          name: name,
+          price: price,
+          unitPrice: unitPrice,
+          priceType: priceType,
+          quantity: quantity,
+          note: note || '',
+          totalPrice: (priceType !== 'consult' && unitPrice) ? unitPrice * quantity : 0
+        };
+        cart.push(item);
+        saveCart();
+        renderCart();
+      }
+
+      function removeFromCart(index) {
+        if (index >= 0 && index < cart.length) {
+          cart.splice(index, 1);
+          saveCart();
+          renderCart();
+        }
+      }
+
+      function clearCart() {
+        if (cart.length === 0) return;
+        if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
+          cart = [];
+          saveCart();
+          renderCart();
+        }
+      }
+
+      function generateWhatsAppMessage() {
+        if (cart.length === 0) return null;
+
+        const lines = [];
+        lines.push('Nuevo pedido Bonishop');
+        lines.push('');
+
+        cart.forEach((item, index) => {
+          const qty = item.quantity || 1;
+          const isConsult = item.priceType === 'consult' || item.price === 'Precio a consultar';
+          const precioTexto = isConsult ? 'Precio a consultar' : `$${((item.unitPrice || 0) * qty)}`;
+          const notaTexto = item.note && item.note.trim() ? item.note.trim() : 'Sin nota';
+
+          lines.push(`Producto: ${item.name}`);
+          lines.push(`Cantidad: ${qty}`);
+          lines.push(`Precio: ${precioTexto}`);
+          lines.push(`Nota: ${notaTexto}`);
+
+          if (index < cart.length - 1) {
+            lines.push('');
+          }
+        });
+
+        return lines.join('\n');
+      }
+
+      function getUnitLabel(item) {
+        if (item.priceType === 'unit') {
+          return 'piezas';
+        } else if (item.priceType === 'fixed') {
+          return 'órdenes';
+        } else {
+          return '';
+        }
+      }
+
+      // ---------- ABRIR/CERRAR CARRITO ----------
+      function openCart() {
+        cartPanel.classList.add('open');
+        cartOverlay.classList.add('open');
+        if (navMenu.classList.contains('open')) {
+          navMenu.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      function closeCart() {
+        cartPanel.classList.remove('open');
+        cartOverlay.classList.remove('open');
+      }
+
+      // ---------- MODAL CANTIDAD ----------
+      function openModal(item) {
+        modalItemData = item;
+        modalItemName.textContent = item.name;
+        modalItemPrice.textContent = item.price;
+
+        let labelText = 'Cantidad:';
+        if (item.priceType === 'unit') {
+          labelText = 'Número de piezas:';
+        } else if (item.priceType === 'fixed') {
+          labelText = 'Cantidad de órdenes:';
+        } else {
+          labelText = 'Cantidad:';
+        }
+        modalQuantityLabel.textContent = labelText;
+
+        modalQtyInput.value = 1;
+        modalNoteInput.value = '';
+        updateSubtotal();
+
+        modal.classList.add('open');
+        modalQtyInput.focus();
+        modalQtyInput.select();
+      }
+
+      function closeModal() {
+        modal.classList.remove('open');
+        modalItemData = null;
+      }
+
+      function updateSubtotal() {
+        if (!modalItemData) return;
+        const qty = parseInt(modalQtyInput.value) || 1;
+        const unit = modalItemData.unitPrice || 0;
+        if (modalItemData.priceType === 'consult' || modalItemData.price === 'Precio a consultar') {
+          modalSubtotal.textContent = `Cantidad: ${qty} (Precio a consultar)`;
+        } else {
+          const total = unit * qty;
+          modalSubtotal.textContent = `Subtotal: $${total}`;
+        }
+      }
+
+      function confirmAdd() {
+        if (!modalItemData) return;
+        const qty = parseInt(modalQtyInput.value) || 1;
+        const note = modalNoteInput.value.trim() || '';
+        const { name, price, unitPrice, priceType } = modalItemData;
+        addItemToCart(name, price, unitPrice, priceType, qty, note);
+        closeModal();
+        openCart();
+      }
+
+      // ---------- CAROUSEL ----------
+      function openCarousel(images, title, item) {
+        if (!images || images.length === 0) return;
+        currentImages = images;
+        currentImageIndex = 0;
+        currentCarouselItem = item || null;
+        carouselTitle.textContent = title;
+        updateCarousel();
+        carouselModal.classList.add('open');
+        carouselOrderBtn.style.display = currentCarouselItem ? 'inline-flex' : 'none';
+        if (images.length <= 1) {
+          carouselPrev.style.display = 'none';
+          carouselNext.style.display = 'none';
+        } else {
+          carouselPrev.style.display = 'flex';
+          carouselNext.style.display = 'flex';
+        }
+      }
+
+      function closeCarousel() {
+        carouselModal.classList.remove('open');
+        currentImages = [];
+        currentImageIndex = 0;
+        currentCarouselItem = null;
+      }
+
+      function updateCarousel() {
+        if (currentImages.length === 0) return;
+        carouselImage.src = currentImages[currentImageIndex];
+        carouselImage.alt = carouselTitle.textContent;
+        carouselIndicator.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
+      }
+
+      function prevImage() {
+        if (currentImages.length <= 1) return;
+        currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+        updateCarousel();
+      }
+
+      function nextImage() {
+        if (currentImages.length <= 1) return;
+        currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+        updateCarousel();
+      }
+
+      // ---------- TUTORIAL ----------
+      function showTutorial() {
+        tutorialStep = 0;
+        updateTutorialStep();
+        tutorialOverlay.classList.add('open');
+      }
+
+      function hideTutorial() {
+        tutorialOverlay.classList.remove('open');
+        localStorage.setItem('bonishop_tutorial', 'done');
+      }
+
+      function updateTutorialStep() {
+        const step = TUTORIAL_STEPS[tutorialStep];
+        tutorialStepIndicator.textContent = `Paso ${tutorialStep + 1} de ${TUTORIAL_STEPS.length}`;
+        tutorialIcon.textContent = step.icon;
+        tutorialTitle.textContent = step.title;
+        tutorialText.textContent = step.text;
+        if (tutorialStep === TUTORIAL_STEPS.length - 1) {
+          tutorialNext.textContent = '✅ Entendido';
+          tutorialNext.className = 'btn-done';
+        } else {
+          tutorialNext.textContent = 'Siguiente →';
+          tutorialNext.className = 'btn-next';
+        }
+      }
+
+      function nextTutorialStep() {
+        if (tutorialStep < TUTORIAL_STEPS.length - 1) {
+          tutorialStep++;
+          updateTutorialStep();
+        } else {
+          hideTutorial();
+        }
+      }
+
+      // ---------- EVENTOS ----------
+      cartFloatingBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (cartPanel.classList.contains('open')) {
+          closeCart();
+        } else {
+          openCart();
+        }
+      });
+
+      cartOverlay.addEventListener('click', closeCart);
+      cartClose.addEventListener('click', closeCart);
+
+      cartOrderBtn.addEventListener('click', function() {
+        const msg = generateWhatsAppMessage();
+        if (!msg) {
+          alert('Agrega al menos un platillo antes de hacer el pedido.');
+          return;
+        }
+        const phone = '529961052322';
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+        window.open(url, '_blank');
+        closeCart();
+      });
+
+      cartClearBtn.addEventListener('click', clearCart);
+
+      // Modal cantidad eventos
+      modalCloseBtn.addEventListener('click', closeModal);
+      modalCancelBtn.addEventListener('click', closeModal);
+      modalConfirmBtn.addEventListener('click', confirmAdd);
+
+      modalQtyDec.addEventListener('click', function() {
+        let val = parseInt(modalQtyInput.value) || 1;
+        if (val > 1) val--;
+        modalQtyInput.value = val;
+        updateSubtotal();
+      });
+      modalQtyInc.addEventListener('click', function() {
+        let val = parseInt(modalQtyInput.value) || 1;
+        if (val < 99) val++;
+        modalQtyInput.value = val;
+        updateSubtotal();
+      });
+      modalQtyInput.addEventListener('input', function() {
+        let val = parseInt(this.value) || 1;
+        if (val < 1) val = 1;
+        if (val > 99) val = 99;
+        this.value = val;
+        updateSubtotal();
+      });
+
+      // Carousel eventos
+      carouselClose.addEventListener('click', closeCarousel);
+      carouselPrev.addEventListener('click', prevImage);
+      carouselNext.addEventListener('click', nextImage);
+      carouselOrderBtn.addEventListener('click', function() {
+        if (!currentCarouselItem) return;
+        const item = currentCarouselItem;
+        closeCarousel();
+        openModal(item);
+      });
+      carouselModal.addEventListener('click', function(e) {
+        if (e.target === carouselModal) {
+          closeCarousel();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          if (carouselModal.classList.contains('open')) {
+            closeCarousel();
+          } else if (modal.classList.contains('open')) {
+            closeModal();
+          } else if (cartPanel.classList.contains('open')) {
+            closeCart();
+          } else if (tutorialOverlay.classList.contains('open')) {
+            hideTutorial();
+          }
+        }
+        if (e.key === 'ArrowLeft' && carouselModal.classList.contains('open')) {
+          prevImage();
+          e.preventDefault();
+        }
+        if (e.key === 'ArrowRight' && carouselModal.classList.contains('open')) {
+          nextImage();
+          e.preventDefault();
+        }
+      });
+
+      // ---------- IMÁGENES RELACIONADAS POR PLATILLO (genéricas para Bonishop) ----------
+      const dishImageLibrary = {
+        sushi: [
+          'assets/img/comidas-para-llevar.jpg',
+          'assets/img/tabla-antojitos.jpg',
+          'assets/img/platillo-arroz-frijol.jpg'
+        ],
+        ramen: [
+          'assets/img/guiso-arroz.jpg',
+          'assets/img/platillo-arroz-frijol.jpg',
+          'assets/img/comidas-para-llevar.jpg'
+        ],
+        banderillas: [
+          'assets/img/tabla-antojitos.jpg',
+          'assets/img/comidas-para-llevar.jpg'
+        ],
+        antojitos: [
+          'assets/img/tabla-antojitos.jpg',
+          'assets/img/tacos.jpg',
+          'assets/img/comidas-para-llevar.jpg'
+        ],
+        asiaticos: [
+          'assets/img/platillo-arroz-frijol.jpg',
+          'assets/img/guiso-arroz.jpg',
+          'assets/img/comidas-para-llevar.jpg'
+        ],
+        postres: [
+          'assets/img/comidas-para-llevar.jpg'
+        ],
+        bebidas: [
+          'assets/img/comidas-para-llevar.jpg'
+        ],
+        promociones: [
+          'assets/img/tabla-antojitos.jpg',
+          'assets/img/comidas-para-llevar.jpg'
+        ]
+      };
+
+      function normalizeDishText(text) {
+        return text
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '');
+      }
+
+      function uniqueImages(images) {
+        return [...new Set(images)].slice(0, 3);
+      }
+
+      function getDishImages(name, categoryId) {
+        const normalized = normalizeDishText(`${name} ${categoryId || ''}`);
+
+        if (/(sushi|rollo|rollos|bonisushi|sashimi|tempura)/.test(normalized)) {
+          return uniqueImages(dishImageLibrary.sushi);
+        }
+        if (/(ramen|buldak|sopa|caldo|dumpling)/.test(normalized)) {
+          return uniqueImages(dishImageLibrary.ramen);
+        }
+        if (/(banderilla|kushiage|mini burger|papas)/.test(normalized)) {
+          return uniqueImages(dishImageLibrary.banderillas);
+        }
+        if (/(gohan|yakimeshi|teriyaki|dumplings)/.test(normalized)) {
+          return uniqueImages(dishImageLibrary.asiaticos);
+        }
+        if (/(waffle|mochi|frappé|café|matcha|refresco)/.test(normalized)) {
+          return uniqueImages(dishImageLibrary.postres);
+        }
+        if (/(promoción|combo|especial|familiar)/.test(normalized)) {
+          return uniqueImages(dishImageLibrary.promociones);
+        }
+
+        return uniqueImages([
+          'assets/img/comidas-para-llevar.jpg',
+          'assets/img/guiso-arroz.jpg',
+          'assets/img/platillo-arroz-frijol.jpg'
+        ]);
+      }
+
+      // ---------- INYECTAR BOTONES "ORDENAR" Y "VER PLATILLO" ----------
+      function injectButtons() {
+        const cards = document.querySelectorAll('.menu-item-card');
+        cards.forEach(card => {
+          if (card.querySelector('.btn-actions')) return;
+          const h4 = card.querySelector('.item-top h4');
+          const priceSpan = card.querySelector('.price-pill');
+          if (!h4) return;
+
+          let name = h4.textContent.trim();
+          const tag = h4.querySelector('.item-tag');
+          if (tag) {
+            name = name.replace(tag.textContent, '').trim();
+          }
+
+          let price = priceSpan ? priceSpan.textContent.trim() : 'Precio a consultar';
+          if (price === 'Consultar') price = 'Precio a consultar';
+
+          let priceType = 'consult';
+          let unitPrice = 0;
+          if (price.includes('c/u')) {
+            priceType = 'unit';
+            const match = price.match(/\d+(?:\.\d+)?/);
+            if (match) unitPrice = parseFloat(match[0]);
+          } else if (price !== 'Precio a consultar' && price !== '') {
+            priceType = 'fixed';
+            const match = price.match(/\d+(?:\.\d+)?/);
+            if (match) unitPrice = parseFloat(match[0]);
+          }
+
+          const category = card.closest('.menu-category');
+          const imageUrls = getDishImages(name, category ? category.id : '');
+
+          const actionsDiv = document.createElement('div');
+          actionsDiv.className = 'btn-actions';
+
+          const btnOrder = document.createElement('button');
+          btnOrder.className = 'btn-add';
+          btnOrder.textContent = '🍽️ Ordenar';
+          btnOrder.dataset.name = name;
+          btnOrder.dataset.price = price;
+          btnOrder.dataset.unitPrice = unitPrice;
+          btnOrder.dataset.priceType = priceType;
+
+          btnOrder.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const item = {
+              name: this.dataset.name,
+              price: this.dataset.price,
+              unitPrice: parseFloat(this.dataset.unitPrice) || 0,
+              priceType: this.dataset.priceType
+            };
+            openModal(item);
+            this.textContent = '✓';
+            this.classList.add('added');
+            setTimeout(() => {
+              this.textContent = '🍽️ Ordenar';
+              this.classList.remove('added');
+            }, 800);
+          });
+
+          const btnView = document.createElement('button');
+          btnView.className = 'btn-view';
+          btnView.textContent = ' Ver platillo';
+          btnView.dataset.images = imageUrls.join(',');
+          btnView.dataset.name = name;
+
+          btnView.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const images = this.dataset.images.split(',').map(s => s.trim()).filter(s => s);
+            const title = this.dataset.name;
+            if (images.length > 0) {
+              openCarousel(images, title, {
+                name: name,
+                price: price,
+                unitPrice: unitPrice,
+                priceType: priceType
+              });
+            } else {
+              alert('No hay imágenes disponibles para este platillo.');
+            }
+          });
+
+          actionsDiv.appendChild(btnOrder);
+          actionsDiv.appendChild(btnView);
+
+          const desc = card.querySelector('.item-desc');
+          if (desc) {
+            desc.after(actionsDiv);
+          } else {
+            card.appendChild(actionsDiv);
+          }
+        });
+      }
+
+      // ---------- INICIALIZACIÓN ----------
+      loadCart();
+      injectButtons();
+
+      const tutorialShown = localStorage.getItem('bonishop_tutorial');
+      if (!tutorialShown) {
+        setTimeout(showTutorial, 500);
+      }
+
+      tutorialTrigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (tutorialOverlay.classList.contains('open')) {
+          hideTutorial();
+        } else {
+          showTutorial();
+        }
+      });
+
+      tutorialSkip.addEventListener('click', hideTutorial);
+      tutorialNext.addEventListener('click', nextTutorialStep);
+
+      modalQtyInput.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+
+      console.log('🚀 Carrito Bonishop con carousel y tutorial activo.');
+    })();
+  </script>
+</body>
+</html>
