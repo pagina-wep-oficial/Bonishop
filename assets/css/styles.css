@@ -1118,83 +1118,35 @@ h2 {
     }
 }
 
-/* ===== FORZAR TEMA CLARO (MODO BLANCO) ===== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #ffffff !important;
-    --paper: #ffffff !important;
-    --ink: #21110b !important;
-    --muted: #72655b !important;
-    --line: rgba(33, 17, 11, 0.12) !important;
-  }
-
-  body {
-    background: #ffffff !important;
-    color: var(--ink) !important;
-  }
-
-  .topbar {
-    background: rgba(33, 17, 11, 0.86) !important;
-  }
-
-  .cart-panel {
-    background: var(--paper) !important;
-  }
-
-  .modal-content {
-    background: var(--paper) !important;
-  }
-
-  .menu-item-card {
-    background: var(--paper) !important;
-  }
-
-  .menu-preview-card {
-    background: #ffffff !important;
-  }
-
-  .full-menu {
-    background: var(--bg) !important;
-  }
-
-  .cart-floating-btn {
-    background: var(--orange) !important;
-    color: #251006 !important;
-  }
-  .cart-floating-btn:hover {
-    background: var(--red2) !important;
-    color: #fff !important;
-  }
-}
-/* ===== BONISHOP THEME V2: limpio, rojo, sticker suave ===== */
+/* ===== FORZAR TEMA CLARO SIEMPRE ===== */
 :root {
-  --bg: #ffffff !important;
-  --paper: #ffffff !important;
-  --ink: #111111 !important;
-  --muted: #68605d !important;
-  --red: #f20736 !important;
-  --red2: #c9002b !important;
-  --orange: #ffb52e !important;
-  --cream: #fff0f3 !important;
-  --wood: #21110b !important;
-  --green: #25d366 !important;
-  --line: rgba(17,17,17,.12) !important;
-  --shadow: 0 18px 48px rgba(0,0,0,.16) !important;
-  --radius: 24px !important;
+  --bg: #ffffff;
+  --paper: #ffffff;
+  --ink: #111111;
+  --muted: #68605d;
+  --red: #f20736;
+  --red2: #c9002b;
+  --orange: #ffb52e;
+  --cream: #fff0f3;
+  --wood: #21110b;
+  --green: #25d366;
+  --line: rgba(17,17,17,.12);
+  --shadow: 0 18px 48px rgba(0,0,0,.16);
+  --radius: 24px;
 }
 
 body {
-  background: #ffffff !important;
+  background: #ffffff;
 }
 
 h1, h2, h3 {
-  letter-spacing: 0 !important;
+  letter-spacing: 0;
 }
 
 .topbar {
-  background: rgba(10,10,10,.92) !important;
-  border-bottom: 3px solid var(--red) !important;
-  box-shadow: 0 12px 32px rgba(0,0,0,.22) !important;
+  background: rgba(10,10,10,.92);
+  border-bottom: 3px solid var(--red);
+  box-shadow: 0 12px 32px rgba(0,0,0,.22);
 }
 
 .brand strong {
@@ -1203,27 +1155,27 @@ h1, h2, h3 {
 }
 
 .brand small {
-  color: #ffd8df !important;
+  color: #ffd8df;
   font-weight: 800;
 }
 
 .brand-logo {
-  height: 54px !important;
-  width: auto !important;
+  height: 54px;
+  width: auto;
   filter: drop-shadow(0 6px 0 rgba(0,0,0,.32));
 }
 
 .brand-icon {
-  background: #fff !important;
-  color: var(--red) !important;
+  background: #fff;
+  color: var(--red);
   border: 2px solid rgba(255,255,255,.8);
-  box-shadow: 0 10px 24px rgba(0,0,0,.26) !important;
+  box-shadow: 0 10px 24px rgba(0,0,0,.26);
 }
 
 .hero-shade {
   background:
     linear-gradient(90deg, rgba(0,0,0,.92), rgba(0,0,0,.68) 46%, rgba(242,7,54,.18)),
-    repeating-linear-gradient(135deg, rgba(255,255,255,.08) 0 2px, transparent 2px 18px) !important;
+    repeating-linear-gradient(135deg, rgba(255,255,255,.08) 0 2px, transparent 2px 18px);
 }
 
 .hero-copy h1 {
@@ -1238,63 +1190,63 @@ h1, h2, h3 {
 .map-card,
 .qr-box,
 .menu-item-card {
-  border: 4px solid #ffffff !important;
-  box-shadow: 0 18px 46px rgba(0,0,0,.18) !important;
+  border: 4px solid #ffffff;
+  box-shadow: 0 18px 46px rgba(0,0,0,.18);
 }
 
 .hero-card {
-  transform: rotate(-.7deg) !important;
-  background: rgba(255,255,255,.16) !important;
+  transform: rotate(-.7deg);
+  background: rgba(255,255,255,.16);
 }
 
 .primary,
 .btn-add,
 .cart-floating-btn {
-  background: linear-gradient(180deg, #ff1748, var(--red2)) !important;
-  color: #fff !important;
-  box-shadow: 0 12px 28px rgba(242,7,54,.28) !important;
+  background: linear-gradient(180deg, #ff1748, var(--red2));
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(242,7,54,.28);
 }
 
 .secondary,
 .mini-cta,
 .btn-view {
-  background: #fff !important;
-  color: #111 !important;
+  background: #fff;
+  color: #111;
 }
 
 .btn,
 .mini-cta,
 .btn-add,
 .btn-view {
-  border-radius: 999px !important;
-  font-weight: 950 !important;
+  border-radius: 999px;
+  font-weight: 950;
 }
 
 .dishes,
 .gallery,
 .location,
 .full-menu {
-  background: #ffffff !important;
+  background: #ffffff;
 }
 
 .dish-card:after {
-  background: linear-gradient(0deg, rgba(0,0,0,.86), rgba(242,7,54,.12) 55%, transparent) !important;
+  background: linear-gradient(0deg, rgba(0,0,0,.86), rgba(242,7,54,.12) 55%, transparent);
 }
 
 .dish-card p,
 .category-badge,
 .price-pill,
 .preview-price {
-  background: var(--red) !important;
-  color: #fff !important;
+  background: var(--red);
+  color: #fff;
 }
 
 .eyebrow.dark {
-  background: #fff !important;
-  color: #111 !important;
-  border: 2px solid rgba(0,0,0,.12) !important;
-  border-bottom: 5px solid var(--red) !important;
-  box-shadow: 0 12px 28px rgba(0,0,0,.12) !important;
+  background: #fff;
+  color: #111;
+  border: 2px solid rgba(0,0,0,.12);
+  border-bottom: 5px solid var(--red);
+  box-shadow: 0 12px 28px rgba(0,0,0,.12);
 }
 
 .eyebrow.dark::before {
@@ -1302,9 +1254,9 @@ h1, h2, h3 {
 }
 
 .floating-whatsapp {
-  background: var(--green) !important;
-  border: 4px solid #fff !important;
-  box-shadow: 0 16px 38px rgba(0,0,0,.28) !important;
+  background: var(--green);
+  border: 4px solid #fff;
+  box-shadow: 0 16px 38px rgba(0,0,0,.28);
 }
 
 .floating-whatsapp img {
@@ -1320,13 +1272,14 @@ h1, h2, h3 {
 
 @media (max-width: 580px) {
   .brand-logo {
-    height: 42px !important;
+    height: 42px;
   }
 
   .hero-card {
-    transform: none !important;
+    transform: none;
   }
 }
+
 .floating-whatsapp img {
   width: 32px;
   height: 32px;

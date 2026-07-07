@@ -783,54 +783,7 @@
       transform: translateY(-2px);
     }
 
-    /* ===== FORZAR TEMA CLARO (MODO BLANCO) ===== */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #fff7ec !important;
-        --paper: #fffdf8 !important;
-        --ink: #21110b !important;
-        --muted: #72655b !important;
-        --line: rgba(33, 17, 11, 0.12) !important;
-      }
 
-      body {
-        background: var(--bg) !important;
-        color: var(--ink) !important;
-      }
-
-      .topbar {
-        background: rgba(33, 17, 11, 0.86) !important;
-      }
-
-      .cart-panel {
-        background: var(--paper) !important;
-      }
-
-      .modal-content {
-        background: var(--paper) !important;
-      }
-
-      .menu-item-card {
-        background: var(--paper) !important;
-      }
-
-      .menu-preview-card {
-        background: #fffaf0 !important;
-      }
-
-      .full-menu {
-        background: var(--bg) !important;
-      }
-
-      .cart-floating-btn {
-        background: var(--orange) !important;
-        color: #251006 !important;
-      }
-      .cart-floating-btn:hover {
-        background: var(--red2) !important;
-        color: #fff !important;
-      }
-    }
         /* ===== BOTONES FLOTANTES: WhatsApp + Ayuda ===== */
     .floating-buttons {
       position: fixed;
